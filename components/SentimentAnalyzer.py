@@ -11,6 +11,8 @@ class SentimentAnalyzer:
 
     def get_sentiment_analysis(self):
 
+        individual_scores = {}
+
         sentiment_buckets = {
         "very_negative": 0,
         "somewhat_negative": 0,
@@ -18,12 +20,17 @@ class SentimentAnalyzer:
         "somewhat_positive": 0,
         "very_positive": 0
         }
+
         total = 0
         num = 0
 
         for s in self.data:
             feel = TextBlob(s)
-            pol = feel.sentiment.polarity
+            pol = round(feel.sentiment.polarity, 2)
+            if pol not in individual_scores: individual_scores[pol] = 1
+            else: individual_scores[pol] += 1
+
+
             total += pol
             num += 1
 
@@ -44,7 +51,12 @@ class SentimentAnalyzer:
                 with open("output/samples/veryNegativeExamples.txt", 'a') as file: file.write(s + "\n")
 
 
-        # print(sentiment_buckets)
-        # print("Overall Average: ", total / num)
         self.sentiment_buckets = sentiment_buckets
-        self.average_sentiment = total / num
+        self.average_sentiment = round(total / num, 2)
+
+        sorted_dict = {}
+        ordered_scores = sorted(individual_scores.keys())
+        for s in ordered_scores:
+            sorted_dict[s] = individual_scores[s]
+
+        self.individual_scores = sorted_dict

@@ -2,6 +2,7 @@ from components.PdfExtractor import PdfExtractor
 from components.Formatter import Formatter
 from components.SentimentAnalyzer import SentimentAnalyzer
 from components.plotters.SentimentPlotter import SentimentPlotter
+from components.plotters.SentimentScatterPlot import SentimentScatterPlot
 
 
 if __name__ == "__main__":
@@ -20,10 +21,14 @@ if __name__ == "__main__":
     analyzer = SentimentAnalyzer(data)
     average = analyzer.average_sentiment
     categories = analyzer.sentiment_buckets
-    print(average, categories)
+    individual_scores = analyzer.individual_scores
+    print(average, categories, individual_scores)
 
     # plot sentiment
     plotter = SentimentPlotter(categories, "Sentiment Based on Free Response Text","Category", False)
     plotter.plot()
+
+    scatter = SentimentScatterPlot(individual_scores, "Sentiment Based on Free Response Text", "Sentiment Score", False)
+    scatter.plot()
 
 
