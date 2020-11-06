@@ -4,6 +4,8 @@ from components.SentimentAnalyzer import SentimentAnalyzer
 from components.plotters.SentimentPlotter import SentimentPlotter
 from components.plotters.SentimentScatterPlot import SentimentScatterPlot
 
+from components.SentimentAnalyzerCustom import SentimentAnalyzerCustom
+
 
 if __name__ == "__main__":
 
@@ -30,6 +32,10 @@ if __name__ == "__main__":
 
     scatter = SentimentScatterPlot(individual_scores, "Sentiment Based on Free Response Text", "Sentiment Score", False)
     scatter.plot()
+
+    # # custom Sentiment
+    # custom = SentimentAnalyzerCustom(data)
+    # custom.process()
 
 
 # from textblob import TextBlob

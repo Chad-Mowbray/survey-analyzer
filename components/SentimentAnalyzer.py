@@ -2,6 +2,10 @@ import re
 from nltk.sentiment import SentimentAnalyzer
 from textblob import TextBlob
 
+# import nltk
+# from nltk.sentiment.vader import SentimentIntensityAnalyzer
+# nltk.download('vader_lexicon')
+
 
 class SentimentAnalyzer:
 
@@ -25,14 +29,26 @@ class SentimentAnalyzer:
         total = 0
         num = 0
 
+        # intensity_analyzer = SentimentIntensityAnalyzer()
         for s in self.data:
-            feel = TextBlob(s)
-            pol = round(feel.sentiment.polarity, 2)
-            # if pol == 0: print(s)
+            textblob_analyzer = TextBlob(s)
+            textblob_combined = round(textblob_analyzer.sentiment.polarity, 2)
+
+            # intensity_analyzer_scores_pos, intensity_analyzer_scores_neg = intensity_analyzer.polarity_scores(s)['pos'], intensity_analyzer.polarity_scores(s)['neg']
+            # intensity_analyzer_combined = round(intensity_analyzer_scores_neg + intensity_analyzer_scores_neg, 2)
+
+            
+            pol = textblob_combined
+            # print("textblob score: ", textblob_combined)
+            # print("intensity analyzer score: ", intensity_analyzer_combined)
+            # print(s)
+            # print()
 
             if -0.1 <= pol <= 0.1:
                 supplement = self.supplemental_check(s, pol)
                 pol = round(pol + supplement, 2)
+            
+            pol = self.stock_phrases(s, pol)
 
             if pol not in individual_scores: individual_scores[pol] = 1
             else: individual_scores[pol] += 1
@@ -82,3 +98,10 @@ class SentimentAnalyzer:
             else:
                 return pol - .2
         return pol
+
+
+    def stock_phrases(self, comment, pol):
+        neutral_stock = ["No major problems have come up.", "No issues.", "No complaints.", "Unsure", "No", "Not sure.", "No effect"]
+
+        if comment in neutral_stock: return 0
+        else: return pol
