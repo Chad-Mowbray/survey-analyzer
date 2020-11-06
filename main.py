@@ -32,3 +32,10 @@ if __name__ == "__main__":
     scatter.plot()
 
 
+# from textblob import TextBlob
+
+
+# x ="It's made it somewhat difficult to have a good dynamic between the students and instructor in terms of questions. Electronic handwritten notes do not work as well as whiteboardor chalkboard."
+
+# b = TextBlob(x)
+# print(b.sentiment)
