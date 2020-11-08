@@ -1,6 +1,8 @@
 import re
-from nltk.sentiment import SentimentAnalyzer
-from textblob import TextBlob
+from nltk.tokenize import RegexpTokenizer
+from nltk.stem.porter import PorterStemmer
+from nltk.corpus import stopwords
+nltk.download('punkt')
 
 
 class Formatter:
@@ -11,21 +13,44 @@ class Formatter:
 
 
     def get_comments_by_student(self):
-        sentences = []
+        comments = []
         with open(self.filename, 'r') as file:
             for line in file.readlines():
                 if line in ['', '\n']: continue
 
-                pattern = '[\.a-z]+[A-Z]+'
+                pattern = '[\.?!,;:a-z]+[A-Z]+'
                 if re.search(pattern, line):
                     p = re.compile(pattern)
                     iterator = p.finditer(line)
                     prev = 0
+                    builder = ''
                     for match in iterator:
                         i = match.span()[1]
-                        sentences.append(line[prev:i - 1])
+                        print(line[prev:i - 1])
+                        comments.append(line[prev:i - 1])
+                        # builder += line[prev:i - 1] + " "
                         prev = i -1
+                    # comments.append(builder)
+                    # builder = ''
+                    print("################")
                 else:
-                    sentences.append(line)
+                    comments.append(line)
 
-        self.comments_by_student = sentences
+        self.comments_by_student = comments
+
+
+    def get_stemmed_comments_by_student(self):
+        stemmer = PorterStemmer()
+        tokenizer = RegexpTokenizer(r'\w+')
+        stop_words = set(stopwords.words('english'))
+
+        clean_and_stemmed = []
+        for comment in self.comments_by_student:
+            rebuild_comment = []
+            for token in tokenizer.tokenize(comment.lower()):
+                if token not in stop_words:
+                    clean_token = stemmer.stem(token)
+                    rebuild_comment.append(clean_token)
+            clean_and_stemmed.append(" ".join(rebuild_comment))
+
+        self.clean_and_stemmed_comments = clean_and_stemmed
