@@ -4,7 +4,7 @@ from components.SentimentAnalyzer import SentimentAnalyzer
 from components.plotters.SentimentPlotter import SentimentPlotter
 from components.plotters.SentimentScatterPlot import SentimentScatterPlot
 
-# from components.SentimentAnalyzerCustom import SentimentAnalyzerCustom
+from components.SentimentAnalyzerCustom import SentimentAnalyzerCustom
 
 
 if __name__ == "__main__":
@@ -23,31 +23,38 @@ if __name__ == "__main__":
     data = remote_instruction_formatter.clean_and_stemmed_comments
 
 
+    # Testing custom sentiment analyzer
+    x = SentimentAnalyzerCustom()
+    x.prepare_training_data()
+    x.create_train_feature_set()
+    x.train()
+    x.test(data[10:20])
+
 
     # extract sentiment
     # SentimentAnalyzer
-    analyzer = SentimentAnalyzer(data)
+    analyzer = SentimentAnalyzer(data, x.pickle_file, x.cleaned_tokens)
     average = analyzer.average_sentiment
     categories = analyzer.sentiment_buckets
     individual_scores = analyzer.individual_scores
     print(average, categories, individual_scores)
 
-#     # plot sentiment
-    plotter = SentimentPlotter(categories, "Sentiment Based on Free Response Text","Category", False)
-    plotter.plot()
+# #     # plot sentiment
+#     plotter = SentimentPlotter(categories, "Sentiment Based on Free Response Text","Category", False)
+#     plotter.plot()
 
-    scatter = SentimentScatterPlot(individual_scores, "Sentiment Based on Free Response Text", "Sentiment Score", False)
-    scatter.plot()
+#     scatter = SentimentScatterPlot(individual_scores, "Sentiment Based on Free Response Text", "Sentiment Score", False)
+#     scatter.plot()
 
-#     # # custom Sentiment
-#     # custom = SentimentAnalyzerCustom(data)
-#     # custom.process()
-
-
-# # from textblob import TextBlob
+# #     # # custom Sentiment
+# #     # custom = SentimentAnalyzerCustom(data)
+# #     # custom.process()
 
 
-# # x ="It's made it somewhat difficult to have a good dynamic between the students and instructor in terms of questions. Electronic handwritten notes do not work as well as whiteboardor chalkboard."
+# # # from textblob import TextBlob
 
-# # b = TextBlob(x)
-# # print(b.sentiment)
+
+# # # x ="It's made it somewhat difficult to have a good dynamic between the students and instructor in terms of questions. Electronic handwritten notes do not work as well as whiteboardor chalkboard."
+
+# # # b = TextBlob(x)
+# # # print(b.sentiment)
