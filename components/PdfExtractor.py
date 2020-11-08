@@ -29,6 +29,7 @@ class PdfExtractor:
                 # close open handles
                 converter.close()
                 fake_file_handle.close()
+                
         
     def extract_text_to_file(self):
         questions = [

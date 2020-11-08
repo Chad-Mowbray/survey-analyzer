@@ -57,7 +57,7 @@ class SentimentAnalyzer:
             total += pol
             num += 1
 
-            if 0.5 <= pol <= 1: 
+            if 0.5 <= pol <= 2: 
                 sentiment_buckets["very_positive"] += 1
                 with open("output/samples/veryPositiveExamples.txt", 'a') as file: file.write(s + "\n")
             elif 0.1 <= pol <= 0.5: 
@@ -70,7 +70,7 @@ class SentimentAnalyzer:
             elif -0.5 <= pol <= -0.1: 
                 sentiment_buckets["somewhat_negative"] += 1
                 with open("output/samples/somewhatNegativeExamples.txt", 'a') as file: file.write(s + "\n")
-            elif -1 <= pol <= -0.5: 
+            elif -2 <= pol <= -0.5: 
                 sentiment_buckets["very_negative"] += 1
                 with open("output/samples/veryNegativeExamples.txt", 'a') as file: file.write(s + "\n")
 
