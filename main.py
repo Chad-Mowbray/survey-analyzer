@@ -8,6 +8,8 @@ from components.RelationshipFinder import RelationshipFinder
 
 from components.CategoryBigrams import CategoryBigrams
 
+from components.plotters.OverlayPlotter import OverlayPlotter
+
 # from components.SentimentAnalyzerCustom import SentimentAnalyzerCustom
 
 
@@ -49,24 +51,60 @@ if __name__ == "__main__":
     # Find relationships
     relationship = RelationshipFinder(comments_and_ratings)
 
-    lab_regex = "lab"
-    print("lab ratio: ", relationship.get_base_info(lab_regex))
+    lab_regex = r"^lab" # maybe include science too
+    lab_info = relationship.get_base_info(lab_regex)
+    print("lab ratio: ", lab_info)
 
     lang_regex = "language"
-    print("language ratio: ", relationship.get_base_info(lang_regex))
+    lang_info = relationship.get_base_info(lang_regex)
+    print("language ratio: ", lang_info)
 
     discuss_regex = "discus"
-    print("discussion ratio: ", relationship.get_base_info(discuss_regex))
+    discuss_info = relationship.get_base_info(discuss_regex)
+    print("discussion ratio: ", discuss_info)
 
     zoom_regex = "zoom"
-    print("zoom ratio: ", relationship.get_base_info(zoom_regex))
+    zoom_info = relationship.get_base_info(zoom_regex)
+    print("zoom ratio: ", zoom_info)
+
+    connection_regex = r"connect(?!.*internet)+(?=.*\b(?:students|peers|professor|everyone|classmates|people)\b)"
+    connection_info = relationship.get_base_info(connection_regex)
+    print("connection ratio: ", connection_info)
+
+    lecture_regex = "lectur"
+    lecture_info = relationship.get_base_info(lecture_regex)
+    print("lecture ratio: ", lecture_info)
 
 
-    # Bigrams
-    bigram = CategoryBigrams(comments_and_ratings)
-    print("POSITIVE: ", bigram.sorted_bigrams_positive)
-    print("NEUTRAL: ", bigram.sorted_bigrams_neutral)
-    print("NEGATIVE: ", bigram.sorted_bigrams_negative)
+    # Plot base
+    plotter = SentimentPlotter(categories, "Three buckets", "Category", False)
+    plotter.plot()
+
+    # Plot overlay relationships
+    overlay = OverlayPlotter(percents, lab_info, "Labs")
+    overlay.plot()
+
+    overlay = OverlayPlotter(percents, lang_info, "Language")
+    overlay.plot()
+
+    overlay = OverlayPlotter(percents, discuss_info, "Discussion")
+    overlay.plot()
+
+    overlay = OverlayPlotter(percents, zoom_info, "Zoom")
+    overlay.plot()
+
+    overlay = OverlayPlotter(percents, connection_info, "Personal Connections")
+    overlay.plot()
+
+    overlay = OverlayPlotter(percents, lecture_info, "Lecture")
+    overlay.plot()
+
+
+    # # Bigrams
+    # bigram = CategoryBigrams(comments_and_ratings)
+    # print("POSITIVE: ", bigram.sorted_positive_bigrams[:20])
+    # print("NEUTRAL: ", bigram.sorted_neutral_bigrams[:20])
+    # print("NEGATIVE: ", bigram.sorted_negative_bigrams[:20])
 
 
     # plotter = SentimentPlotter(categories, "Three buckets", "Category", False)

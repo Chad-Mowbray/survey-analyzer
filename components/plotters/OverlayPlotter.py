@@ -1,23 +1,44 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-width = 0.8
 
-highPower   = [1184.53,1523.48,1521.05,1517.88,1519.88,1414.98,
-               1419.34,1415.13,1182.70,1165.17]
-lowPower    = [1000.95,1233.37, 1198.97,1198.01,1214.29,1130.86,
-               1138.70,1104.12,1012.95,1000.36]
 
-indices = np.arange(len(highPower))
+class OverlayPlotter:
+    def __init__(self, base, other, topic):
+        self.base = base
+        self.other = other
+        self.topic = topic
 
-plt.bar(indices, highPower, width=width, 
-        color='b', label='Max Power in mW')
-plt.bar([i+0.25*width for i in indices], lowPower, 
-        width=0.5*width, color='r', alpha=0.5, label='Min Power in mW')
+    def plot(self):
+        width = 0.8
 
-plt.xticks(indices+width/2., 
-           ['T{}'.format(i) for i in range(len(highPower))] )
+        # highPower   = [1184.53,1523.48,1521.05,1517.88,1519.88,1414.98,
+        #             1419.34,1415.13,1182.70,1165.17]
+        # lowPower    = [1000.95,1233.37, 1198.97,1198.01,1214.29,1130.86,
+        #             1138.70,1104.12,1012.95,1000.36]
+        base = self.base
+        other = self.other
 
-plt.legend()
+        color = None
+        if self.other[2] > self.base[2]:
+            color = "r"
+        else:
+            color = "g"
 
-plt.show()
+        indices = np.arange(len(base))
+
+        plt.bar(indices, base, width=width, 
+                color='grey', label='Base Sentiment Distribution')
+        plt.bar([i+0.25*width for i in indices], other, 
+                width=0.8*width, color=color, alpha=0.8, label=f'Sentiment Distribution for {self.topic}')
+        
+        plt.title("Comparative Sentiment Analysis")
+        # plt.xlabel(self.x_label)
+        # plt.ylabel(self.y_label)
+
+        plt.xticks(indices+width/2., 
+                ["Positive", "Neutral", "Negative"] )
+
+        plt.legend()
+
+        plt.show()
