@@ -75,9 +75,13 @@ if __name__ == "__main__":
     lecture_info = relationship.get_base_info(lecture_regex)
     print("lecture ratio: ", lecture_info)
 
+    canvas_regex = "canvas"
+    canvas_info = relationship.get_base_info(canvas_regex)
+    print("canvas ratio: ", canvas_info)
+
 
     # Plot base
-    plotter = SentimentPlotter(categories, "Three buckets", "Category", False)
+    plotter = SentimentPlotter(categories, "Sentiment Categorization by Comment", "Sentiment Category", False)
     plotter.plot()
 
     # Plot overlay relationships
@@ -97,6 +101,9 @@ if __name__ == "__main__":
     overlay.plot()
 
     overlay = OverlayPlotter(percents, lecture_info, "Lecture")
+    overlay.plot()
+
+    overlay = OverlayPlotter(percents, canvas_info, "Canvas")
     overlay.plot()
 
 

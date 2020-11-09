@@ -10,7 +10,7 @@ class OverlayPlotter:
         self.topic = topic
 
     def plot(self):
-        width = 0.8
+        width = 0.5
 
         # highPower   = [1184.53,1523.48,1521.05,1517.88,1519.88,1414.98,
         #             1419.34,1415.13,1182.70,1165.17]
@@ -27,14 +27,15 @@ class OverlayPlotter:
 
         indices = np.arange(len(base))
 
-        plt.bar(indices, base, width=width, 
+        plt.bar(indices + .1, base, width=width, 
                 color='grey', label='Base Sentiment Distribution')
-        plt.bar([i+0.25*width for i in indices], other, 
-                width=0.8*width, color=color, alpha=0.8, label=f'Sentiment Distribution for {self.topic}')
+        plt.bar([i+0.50*width for i in indices], other, 
+                width=0.8*width, color=color, alpha=0.8, label=f'Sentiment Distribution for {self.topic}', align='edge')
         
         plt.title("Comparative Sentiment Analysis")
-        # plt.xlabel(self.x_label)
-        # plt.ylabel(self.y_label)
+        plt.xlabel("Sentiment")
+        plt.ylabel("Percent of Comments")
+        plt.ylim(0.0, 1.0)
 
         plt.xticks(indices+width/2., 
                 ["Positive", "Neutral", "Negative"] )

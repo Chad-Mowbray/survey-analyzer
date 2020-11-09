@@ -6,7 +6,7 @@ class SentimentPlotter:
     Plots given data
     """
 
-    def __init__(self, data, title, x_label, quick_run, y_label="Frequency", display_number=10):
+    def __init__(self, data, title, x_label, quick_run, y_label="Number of Comments", display_number=10):
         self.data = data
         self.title = title
         self.x_label = x_label
