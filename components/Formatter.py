@@ -31,13 +31,13 @@ class Formatter:
                     builder = ''
                     for match in iterator:
                         i = match.span()[1]
-                        print(line[prev:i - 1])
+                        # print(line[prev:i - 1])
                         comments.append(line[prev:i - 1])
                         # builder += line[prev:i - 1] + " "
                         prev = i -1
                     # comments.append(builder)
                     # builder = ''
-                    print("################")
+                    # print("################")
                 else:
                     comments.append(line)
 

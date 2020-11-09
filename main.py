@@ -16,11 +16,11 @@ if __name__ == "__main__":
 
     # format text so that comments are the units
     remote_instruction_formatter = Formatter("output/How_has_remote_instruction_affected_your_experience.txt")
-    # data = remote_instruction_formatter.comments_by_student
+    data = remote_instruction_formatter.comments_by_student
 
     # clean and stem words
-    remote_instruction_formatter.get_stemmed_comments_by_student()
-    data = remote_instruction_formatter.clean_and_stemmed_comments
+    # remote_instruction_formatter.get_stemmed_comments_by_student()
+    # data = remote_instruction_formatter.clean_and_stemmed_comments
 
 
 
@@ -30,10 +30,14 @@ if __name__ == "__main__":
     average = analyzer.average_sentiment
     categories = analyzer.sentiment_buckets
     individual_scores = analyzer.individual_scores
-    print(average, categories, individual_scores)
+    three_buckets = analyzer.three_buckets
+    print(average, categories, individual_scores, three_buckets)
 
 #     # plot sentiment
-    plotter = SentimentPlotter(categories, "Sentiment Based on Free Response Text","Category", False)
+    # plotter = SentimentPlotter(categories, "Sentiment Based on Free Response Text","Category", False)
+    # plotter.plot()
+
+    plotter = SentimentPlotter(three_buckets, "Three buckets", "Category", False)
     plotter.plot()
 
     scatter = SentimentScatterPlot(individual_scores, "Sentiment Based on Free Response Text", "Sentiment Score", False)
