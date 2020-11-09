@@ -19,11 +19,15 @@ class SentimentAnalyzer:
         individual_scores = {}
 
         sentiment_buckets = {
-        "very_negative": 0,
-        "somewhat_negative": 0,
-        "neutral": 0,
-        "somewhat_positive": 0,
-        "very_positive": 0
+            "positive": 0,
+            "neutral": 0,
+            "negative": 0
+        }
+
+        comments_and_ratings = {
+            "positive": [],
+            "neutral": [],
+            "negative": []
         }
 
         total = 0
@@ -33,18 +37,9 @@ class SentimentAnalyzer:
         for s in self.data:
             textblob_analyzer = TextBlob(s)
             textblob_combined = round(textblob_analyzer.sentiment.polarity, 2)
-
-            # intensity_analyzer_scores_pos, intensity_analyzer_scores_neg = intensity_analyzer.polarity_scores(s)['pos'], intensity_analyzer.polarity_scores(s)['neg']
-            # intensity_analyzer_combined = round(intensity_analyzer_scores_neg + intensity_analyzer_scores_neg, 2)
-
             
             pol = textblob_combined
-            # print("textblob score: ", textblob_combined)
-            # print("intensity analyzer score: ", intensity_analyzer_combined)
-            # print(s)
-            # print()
 
-            # if -0.1 <= pol <= 0.1:
             supplement = self.supplemental_check(s, pol)
             pol = round(pol + supplement, 2)
             
@@ -57,22 +52,19 @@ class SentimentAnalyzer:
             total += pol
             num += 1
 
-            if 0.5 <= pol <= 5: 
-                sentiment_buckets["very_positive"] += 1
-                with open("output/samples/veryPositiveExamples.txt", 'a') as file: file.write(str(pol) + " " + s + "\n")
-            elif 0.09 <= pol <= 0.5: 
-                sentiment_buckets["somewhat_positive"] += 1
-                with open("output/samples/somewhatPositiveExamples.txt", 'a') as file: file.write(str(pol) + " " + s + "\n")
-            elif -0.09 <= pol <= 0.09: 
-                if pol == 0: print(s)
+            if pol < -.07: 
+                sentiment_buckets["negative"] += 1
+                comments_and_ratings["negative"].append( ("negative", s) )
+                with open("output/samples/negativeExamples.txt", 'a') as file: file.write(str(pol) + " " + s + "\n")
+            elif pol < .07: 
                 sentiment_buckets["neutral"] += 1
+                comments_and_ratings["neutral"].append( ("neutral", s) )
                 with open("output/samples/neutralExamples.txt", 'a') as file: file.write(str(pol) + " " + s + "\n")
-            elif -0.5 <= pol <= -0.09: 
-                sentiment_buckets["somewhat_negative"] += 1
-                with open("output/samples/somewhatNegativeExamples.txt", 'a') as file: file.write(str(pol) + " " + s + "\n")
-            elif -5 <= pol <= -0.5: 
-                sentiment_buckets["very_negative"] += 1
-                with open("output/samples/veryNegativeExamples.txt", 'a') as file: file.write(str(pol) + " " + s + "\n")
+            elif pol < 5: 
+                sentiment_buckets["positive"] += 1
+                comments_and_ratings["positive"].append( ("positive", s) )
+                with open("output/samples/positiveExamples.txt", 'a') as file: file.write(str(pol) + " " + s + "\n")
+
 
 
         self.sentiment_buckets = sentiment_buckets
@@ -85,21 +77,7 @@ class SentimentAnalyzer:
 
         self.individual_scores = sorted_dict
 
-        self.three_buckets = {
-            "positive": 0,
-            "neutral": 0,
-            "negative": 0
-        }
-
-        for score in self.individual_scores:
-            if float(score) < -.07:
-                self.three_buckets["negative"] += self.individual_scores[score]
-            elif float(score) < .07:
-                self.three_buckets["neutral"] += self.individual_scores[score]
-            elif float(score) < 5:
-                self.three_buckets["positive"] += self.individual_scores[score]
-        # print()          
-        # print(self.three_buckets)
+        self.comments_and_ratings = comments_and_ratings
 
 
 
@@ -151,7 +129,7 @@ class SentimentAnalyzer:
             ]
 
         if comment in neutral_stock: 
-            print("@@@@@@@@@@@@@@", comment)
+            # print("@@@@@@@@@@@@@@", comment)
             return 0
         else: 
             return pol
