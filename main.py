@@ -6,6 +6,8 @@ from components.plotters.SentimentScatterPlot import SentimentScatterPlot
 
 from components.RelationshipFinder import RelationshipFinder
 
+from components.CategoryBigrams import CategoryBigrams
+
 # from components.SentimentAnalyzerCustom import SentimentAnalyzerCustom
 
 
@@ -46,14 +48,25 @@ if __name__ == "__main__":
 
     # Find relationships
     relationship = RelationshipFinder(comments_and_ratings)
-    # print(relationship.comments_and_ratings_base_ratio )
-    relationship.find_lab_info()
-    print("lab ratio: ", relationship.lab_ratio)
-    relationship.find_language_info()
-    print("language ratio: ", relationship.language_ratio)
-    relationship.find_discussion_info()
-    print("discussion ratio: ", relationship.discussion_ratio)
 
+    lab_regex = "lab"
+    print("lab ratio: ", relationship.get_base_info(lab_regex))
+
+    lang_regex = "language"
+    print("language ratio: ", relationship.get_base_info(lang_regex))
+
+    discuss_regex = "discus"
+    print("discussion ratio: ", relationship.get_base_info(discuss_regex))
+
+    zoom_regex = "zoom"
+    print("zoom ratio: ", relationship.get_base_info(zoom_regex))
+
+
+    # Bigrams
+    bigram = CategoryBigrams(comments_and_ratings)
+    print("POSITIVE: ", bigram.sorted_bigrams_positive)
+    print("NEUTRAL: ", bigram.sorted_bigrams_neutral)
+    print("NEGATIVE: ", bigram.sorted_bigrams_negative)
 
 
     # plotter = SentimentPlotter(categories, "Three buckets", "Category", False)
