@@ -1,10 +1,10 @@
-from components.PdfExtractor import PdfExtractor
-from components.Formatter import Formatter
-from components.SentimentAnalyzer import SentimentAnalyzer
+from components.preppers.PdfExtractor import PdfExtractor
+from components.preppers.Formatter import Formatter
+from components.analyzers.SentimentAnalyzer import SentimentAnalyzer
 from components.plotters.SentimentPlotter import SentimentPlotter
 from components.plotters.SentimentScatterPlot import SentimentScatterPlot
-from components.RelationshipFinder import RelationshipFinder
-from components.CategoryBigrams import CategoryBigrams
+from components.analyzers.RelationshipFinder import RelationshipFinder
+from components.analyzers.CategoryBigrams import CategoryBigrams
 from components.plotters.OverlayPlotter import OverlayPlotter
 
 

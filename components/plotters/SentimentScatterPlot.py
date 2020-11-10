@@ -38,8 +38,7 @@ class SentimentScatterPlot:
             plt.title(self.title)
             plt.xlabel(self.x_label)
             plt.ylabel(self.y_label)
-            # for i in range(len(y)):    # add a horizontal line for easier comparison
-            #     plt.hlines(y[i],0,x[i])
+
             if self.quick_run:
                 plt.show(block=False)
                 plt.pause(1)
