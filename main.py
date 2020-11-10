@@ -51,7 +51,7 @@ def main():
     data = remote_instruction_formatter.comments_by_student
 
     # extract sentiment
-    analyzer = SentimentAnalyzer(data)
+    analyzer = SentimentAnalyzer(data, "components/analyzers/custom_model/NBC-0.9.pickle")
     average = analyzer.average_sentiment
     categories = analyzer.sentiment_buckets
     individual_scores = analyzer.individual_scores

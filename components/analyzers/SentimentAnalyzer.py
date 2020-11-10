@@ -1,12 +1,33 @@
 import re
 from textblob import TextBlob
 
+import nltk
+import pickle
+from nltk.tokenize import word_tokenize, RegexpTokenizer
+from nltk.stem.porter import PorterStemmer
+nltk.download("punkt")
+
 
 class SentimentAnalyzer:
 
-    def __init__(self, data):
+    def __init__(self, data, pickle_file):
         self.data = data
+        self.supplemental_model = None
+        self.cleaned_tokens = None
+        self.get_supplemental_model(pickle_file)
+        self.stemmer = PorterStemmer()
+        self.tokenizer = RegexpTokenizer(r'\w+')
         self.get_sentiment_analysis()
+        
+
+    def get_supplemental_model(self, pickle_file):
+        with open(pickle_file, "rb") as pickled_model:
+            model = pickle.load(pickled_model)
+            self.supplemental_model = model
+        
+        with open("components/analyzers/custom_model/cleaned_tokens.pickle", "rb") as token_file:
+            tokens = pickle.load(token_file)
+            self.cleaned_tokens = tokens
 
 
     def get_sentiment_analysis(self):
@@ -28,7 +49,6 @@ class SentimentAnalyzer:
         total = 0
         num = 0
 
-        # intensity_analyzer = SentimentIntensityAnalyzer()
         for s in self.data:
             textblob_analyzer = TextBlob(s)
             textblob_combined = round(textblob_analyzer.sentiment.polarity, 2)
@@ -42,6 +62,21 @@ class SentimentAnalyzer:
 
             if pol not in individual_scores: individual_scores[pol] = 1
             else: individual_scores[pol] += 1
+
+
+            ## supplemental model for neutrals
+            # rebuilt_comment = []
+            # for token in self.tokenizer.tokenize(s.lower()):
+            #     clean_token = self.stemmer.stem(token)
+            #     rebuilt_comment.append(clean_token)
+            
+            # joined = " ".join(rebuilt_comment)
+            # t_features = {word: (word in self.tokenizer.tokenize(joined) ) for word in self.cleaned_tokens }
+            # if self.supplemental_model.classify(t_features) == "neutral":
+            #     print(self.supplemental_model.classify(t_features), " : ", joined)
+            #     print(pol, " : ", s)
+
+
 
 
             total += pol
