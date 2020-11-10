@@ -18,6 +18,7 @@ class RelationshipFinder:
             for comment in self.comments_and_ratings[rating]:
                 if re.search(regex, comment[1], re.IGNORECASE):
                     count[comment[0]] += 1
+                    # print(comment)
 
         total = sum([num for num in count.values()])
         percents = []

@@ -12,7 +12,6 @@ class OverlayPlotter:
 
 
     def plot(self):
-        width = 0.5
 
         color = None
         if self.other[2] > self.base[2]:
@@ -31,6 +30,7 @@ class OverlayPlotter:
         plt.xlabel("Sentiment")
         plt.ylabel("Percent of Comments")
         plt.ylim(0.0, 1.0)
+        plt.yticks(np.arange(0, 1, step=0.1))
 
         plt.xticks(indices + self.width / 2., 
                 ["Positive", "Neutral", "Negative"] )

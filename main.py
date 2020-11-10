@@ -14,7 +14,7 @@ def overlay_plot(percents, info):
     overlay.plot()
 
 
-def plot_base():
+def plot_base(categories):
     plotter = SentimentPlotter(categories, "Sentiment Categorization by Comment", "Sentiment Category")
     plotter.plot()
 
@@ -65,6 +65,7 @@ def main():
     for category in categories:
         percents.append(round(categories[category] / total,2))
     print("BASE: ", percents)
+    plot_base(categories)
 
     infos = find_relationships(comments_and_ratings)
     [overlay_plot(percents,info) for info in infos] 
