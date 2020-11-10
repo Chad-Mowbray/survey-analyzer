@@ -2,10 +2,6 @@ import re
 from nltk.sentiment import SentimentAnalyzer
 from textblob import TextBlob
 
-# import nltk
-# from nltk.sentiment.vader import SentimentIntensityAnalyzer
-# nltk.download('vader_lexicon')
-
 
 class SentimentAnalyzer:
 
@@ -66,7 +62,6 @@ class SentimentAnalyzer:
                 with open("output/samples/positiveExamples.txt", 'a') as file: file.write(str(pol) + " " + s + "\n")
 
 
-
         self.sentiment_buckets = sentiment_buckets
         self.average_sentiment = round(total / num, 2)
 
@@ -93,13 +88,8 @@ class SentimentAnalyzer:
         positive = "positive"
 
 
-        ## negative: challenge, struggle, distant, disconnected, miss, [less confident|connected], strange, weird
-        ## neutral: [hasn't affected]
-
         if re.search(negative_words, comment, re.IGNORECASE):
-            # print("Subtracting .15")
             if re.search(adjectives, comment[:re.search(negative_words, comment, re.IGNORECASE).span()[0]]):
-                # print("# Subracting .25")
                 total -= .45
             else:
                 total -= .2
@@ -116,7 +106,6 @@ class SentimentAnalyzer:
         if re.search(no_effect, comment, re.IGNORECASE):
             total /= 4
         
-
         return total
 
 
@@ -129,7 +118,6 @@ class SentimentAnalyzer:
             ]
 
         if comment in neutral_stock: 
-            # print("@@@@@@@@@@@@@@", comment)
             return 0
         else: 
             return pol

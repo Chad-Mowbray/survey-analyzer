@@ -3,18 +3,44 @@ from components.Formatter import Formatter
 from components.SentimentAnalyzer import SentimentAnalyzer
 from components.plotters.SentimentPlotter import SentimentPlotter
 from components.plotters.SentimentScatterPlot import SentimentScatterPlot
-
 from components.RelationshipFinder import RelationshipFinder
-
 from components.CategoryBigrams import CategoryBigrams
-
 from components.plotters.OverlayPlotter import OverlayPlotter
 
-# from components.SentimentAnalyzerCustom import SentimentAnalyzerCustom
 
 
-if __name__ == "__main__":
+def overlay_plot(percents, info):
+    overlay = OverlayPlotter(percents, info[0], info[1])
+    overlay.plot()
 
+
+def plot_base():
+    plotter = SentimentPlotter(categories, "Sentiment Categorization by Comment", "Sentiment Category")
+    plotter.plot()
+
+
+def find_relationships(comments_and_ratings):
+    relationship = RelationshipFinder(comments_and_ratings)
+
+    lab_regex = r"^lab"
+    lang_regex = "language"
+    discuss_regex = "discus"
+    zoom_regex = "zoom"
+    connection_regex = r"connect(?!.*internet)+(?=.*\b(?:students|peers|professor|everyone|classmates|people)\b)"
+    lecture_regex = "lectur"
+    canvas_regex = "canvas"
+
+    regex = ( (lab_regex, "Labs"), (lang_regex, "Foreign Language"), (zoom_regex, "Zoom"), (canvas_regex, "Canvas"), \
+            (discuss_regex, "Discussion"), (lecture_regex, "Lecture"), (connection_regex, "Interpersonal Connections"))
+
+    infos = []
+    for r in regex:
+        infos.append( (relationship.get_base_info(r[0]),r[1]) )
+    
+    return infos
+
+
+def main():
     # extract text from pdf and separate each question
     extractor = PdfExtractor("input/evals.pdf")
     extractor.extract_text_to_file()
@@ -24,14 +50,7 @@ if __name__ == "__main__":
     remote_instruction_formatter = Formatter("output/How_has_remote_instruction_affected_your_experience.txt")
     data = remote_instruction_formatter.comments_by_student
 
-    # clean and stem words
-    # remote_instruction_formatter.get_stemmed_comments_by_student()
-    # data = remote_instruction_formatter.clean_and_stemmed_comments
-
-
-
     # extract sentiment
-    # SentimentAnalyzer
     analyzer = SentimentAnalyzer(data)
     average = analyzer.average_sentiment
     categories = analyzer.sentiment_buckets
@@ -47,64 +66,53 @@ if __name__ == "__main__":
         percents.append(round(categories[category] / total,2))
     print("BASE: ", percents)
 
+    infos = find_relationships(comments_and_ratings)
+    [overlay_plot(percents,info) for info in infos] 
 
-    # Find relationships
-    relationship = RelationshipFinder(comments_and_ratings)
 
-    lab_regex = r"^lab" # maybe include science too
-    lab_info = relationship.get_base_info(lab_regex)
-    print("lab ratio: ", lab_info)
+if __name__ == "__main__":
+    main()
 
-    lang_regex = "language"
-    lang_info = relationship.get_base_info(lang_regex)
-    print("language ratio: ", lang_info)
 
-    discuss_regex = "discus"
-    discuss_info = relationship.get_base_info(discuss_regex)
-    print("discussion ratio: ", discuss_info)
 
-    zoom_regex = "zoom"
-    zoom_info = relationship.get_base_info(zoom_regex)
-    print("zoom ratio: ", zoom_info)
 
-    connection_regex = r"connect(?!.*internet)+(?=.*\b(?:students|peers|professor|everyone|classmates|people)\b)"
-    connection_info = relationship.get_base_info(connection_regex)
-    print("connection ratio: ", connection_info)
 
-    lecture_regex = "lectur"
-    lecture_info = relationship.get_base_info(lecture_regex)
-    print("lecture ratio: ", lecture_info)
 
-    canvas_regex = "canvas"
-    canvas_info = relationship.get_base_info(canvas_regex)
-    print("canvas ratio: ", canvas_info)
+
+
+
+
+
+
+
+
 
 
     # Plot base
-    plotter = SentimentPlotter(categories, "Sentiment Categorization by Comment", "Sentiment Category", False)
-    plotter.plot()
+    # plotter = SentimentPlotter(categories, "Sentiment Categorization by Comment", "Sentiment Category")
+    # plotter.plot()
 
     # Plot overlay relationships
-    overlay = OverlayPlotter(percents, lab_info, "Labs")
-    overlay.plot()
+    # overlay = OverlayPlotter(percents, lab_info, "Labs")
+    # overlay.plot()
 
-    overlay = OverlayPlotter(percents, lang_info, "Language")
-    overlay.plot()
+    # overlay = OverlayPlotter(percents, lang_info, "Language")
+    # overlay.plot()
 
-    overlay = OverlayPlotter(percents, discuss_info, "Discussion")
-    overlay.plot()
+    # overlay = OverlayPlotter(percents, discuss_info, "Discussion")
+    # overlay.plot()
 
-    overlay = OverlayPlotter(percents, zoom_info, "Zoom")
-    overlay.plot()
+    # overlay = OverlayPlotter(percents, zoom_info, "Zoom")
+    # overlay.plot()
 
-    overlay = OverlayPlotter(percents, connection_info, "Personal Connections")
-    overlay.plot()
+    # overlay = OverlayPlotter(percents, connection_info, "Personal Connections")
+    # overlay.plot()
 
-    overlay = OverlayPlotter(percents, lecture_info, "Lecture")
-    overlay.plot()
+    # overlay = OverlayPlotter(percents, lecture_info, "Lecture")
+    # overlay.plot()
 
-    overlay = OverlayPlotter(percents, canvas_info, "Canvas")
-    overlay.plot()
+    # overlay = OverlayPlotter(percents, canvas_info, "Canvas")
+    # overlay.plot()
 
 
     # # Bigrams
