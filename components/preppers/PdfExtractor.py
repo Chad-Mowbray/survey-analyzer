@@ -50,7 +50,7 @@ class PdfExtractor:
             # self.write_question_file("output/complete_survey.txt")
 
 
-    def write_individual_question_files(self):
+    def write_individual_question_files(self):   # try using [file].seek(n) to get rid of initial junk
 
         with open("output/complete_survey.txt", 'r') as survey:
             whole = survey.read()
