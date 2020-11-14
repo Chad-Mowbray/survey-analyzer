@@ -10,6 +10,7 @@ from components.plotters.OverlayPlotter import OverlayPlotter
 
 
 def overlay_plot(percents, info):
+    # print("overlay_plot info: ", info)
     overlay = OverlayPlotter(percents, info[0], info[1])
     overlay.plot()
 
@@ -19,8 +20,8 @@ def plot_base(categories):
     plotter.plot()
 
 
-def find_relationships(comments_and_ratings):
-    relationship = RelationshipFinder(comments_and_ratings)
+def find_relationships(comments_and_ratings, base_dist):
+    relationship = RelationshipFinder(comments_and_ratings, base_dist)
 
     lab_regex = r"^lab"
     lang_regex = "language"
@@ -62,12 +63,18 @@ def main():
     total = sum([num for num in categories.values()])
     print(total)
     percents = []
-    for category in categories:
+    base_dist = {}
+    for i,category in enumerate(categories):
+        if i == 0: base_dist["positive"] = categories[category]
+        elif i == 1: base_dist["neutral"] = categories[category]
+        elif i == 2: base_dist["negative"] = categories[category]
+        # print(categories[category])
         percents.append(round(categories[category] / total,2))
+    print(base_dist)
     print("BASE: ", percents)
     plot_base(categories)
 
-    infos = find_relationships(comments_and_ratings)
+    infos = find_relationships(comments_and_ratings, base_dist)
     [overlay_plot(percents,info) for info in infos] 
 
 
