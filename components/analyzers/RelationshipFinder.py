@@ -1,5 +1,5 @@
 import re
-from scipy.stats import mannwhitneyu, chisquare
+from scipy.stats import mannwhitneyu, chisquare, chi2_contingency, ttest_ind, ttest_rel
 
 
 class RelationshipFinder:
@@ -67,5 +67,38 @@ class RelationshipFinder:
         print("u_statistic: ", u_statistic, " p_value: ", p_value)
 
         # print(self.base_dist.values(), count_obj.values())
-        chisq, p = chisquare(list(self.base_dist.values()), list(count_obj.values()))
-        print("chisq: ", chisq, " p: ", p)
+        combined = [list(self.base_dist.values()), list(count_obj.values())]
+        stat, p, dof, expected = chi2_contingency(combined)
+        print("chi p: ", p, p <= 0.05)
+
+        chisq, p = chisquare(list(self.base_dist.values()), list(count_obj.values()) )
+        print(" p: ", p)
+
+        stat, pval = ttest_ind(list(self.base_dist.values()), list(count_obj.values()))
+        print("ttest p: ", pval)
+
+        statxs, pvals = ttest_rel(list(self.base_dist.values()), list(count_obj.values()))
+        print("ttest rel p: ", pvals)
+        print()
+
+
+        ## convert to relative number (based on the subsample)
+        # base = [409, 305, 1331]
+        # samp = [1,1,7]
+        # samp = [2,3,14]
+        # samp = [42,19,156]
+        # samp = [4,3,14]
+        # samp = [79, 55,227]
+        # samp = [89, 53,222 ]
+        # samp = [5,3,24]
+        # percents = [0.2, 0.15, 0.65]
+
+        # total = sum(samp)
+
+        # new_base = []
+        # for i in range(len(samp)):
+        # new_base.append(percents[i] * total)
+
+        # print(new_base)
+        # chisq, p = chisquare(new_base, samp)
+        # print(chisq, p)
