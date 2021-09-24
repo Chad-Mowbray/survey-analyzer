@@ -62,24 +62,24 @@ class RelationshipFinder:
                 for i in range(count_obj[key]):
                     base_dist.append("negative")  
 
-        # print(comparison)      
-        u_statistic, p_value = mannwhitneyu(base_dist, comparison)
-        print("u_statistic: ", u_statistic, " p_value: ", p_value)
+        # # print(comparison)      
+        # u_statistic, p_value = mannwhitneyu(base_dist, comparison)
+        # print("u_statistic: ", u_statistic, " p_value: ", p_value)
 
-        # print(self.base_dist.values(), count_obj.values())
-        combined = [list(self.base_dist.values()), list(count_obj.values())]
-        stat, p, dof, expected = chi2_contingency(combined)
-        print("chi p: ", p, p <= 0.05)
+        # # print(self.base_dist.values(), count_obj.values())
+        # combined = [list(self.base_dist.values()), list(count_obj.values())]
+        # stat, p, dof, expected = chi2_contingency(combined)
+        # print("chi p: ", p, p <= 0.05)
 
-        chisq, p = chisquare(list(self.base_dist.values()), list(count_obj.values()) )
-        print(" p: ", p)
+        # chisq, p = chisquare(list(self.base_dist.values()), list(count_obj.values()) )
+        # print(" p: ", p)
 
-        stat, pval = ttest_ind(list(self.base_dist.values()), list(count_obj.values()))
-        print("ttest p: ", pval)
+        # stat, pval = ttest_ind(list(self.base_dist.values()), list(count_obj.values()))
+        # print("ttest p: ", pval)
 
-        statxs, pvals = ttest_rel(list(self.base_dist.values()), list(count_obj.values()))
-        print("ttest rel p: ", pvals)
-        print()
+        # statxs, pvals = ttest_rel(list(self.base_dist.values()), list(count_obj.values()))
+        # print("ttest rel p: ", pvals)
+        # print()
 
 
         ## convert to relative number (based on the subsample)
