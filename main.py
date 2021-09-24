@@ -10,7 +10,6 @@ from components.plotters.OverlayPlotter import OverlayPlotter
 
 
 def overlay_plot(percents, info):
-    # print("overlay_plot info: ", info)
     overlay = OverlayPlotter(percents, info[0], info[1])
     overlay.plot()
 
@@ -43,43 +42,33 @@ def find_relationships(comments_and_ratings, base_dist):
 
 def main():
     # extract text from pdf and separate each question
-    print("extracting...")
     extractor = PdfExtractor("input/evals.pdf")
     extractor.extract_text_to_file()
     extractor.write_individual_question_files()
 
     # format text so that comments are the units
-    print("formatting...")
     remote_instruction_formatter = Formatter("output/How_has_remote_instruction_affected_your_experience.txt")
     data = remote_instruction_formatter.comments_by_student
-    print(len(data))
     with open('comments.txt', 'w') as comments_file:
         for line in data:
             comments_file.writelines(line)
 
     # extract sentiment
-    print("extracting sentiment...")
     analyzer = SentimentAnalyzer(data, "components/analyzers/custom_model/NBC-0.9.pickle")
     average = analyzer.average_sentiment
     categories = analyzer.sentiment_buckets
     individual_scores = analyzer.individual_scores
     comments_and_ratings = analyzer.comments_and_ratings
-    print(average, categories, individual_scores)
 
     # get percent by category baseline
-    print("getting baseline")
     total = sum([num for num in categories.values()])
-    print(total)
     percents = []
     base_dist = {}
     for i,category in enumerate(categories):
         if i == 0: base_dist["positive"] = categories[category]
         elif i == 1: base_dist["neutral"] = categories[category]
         elif i == 2: base_dist["negative"] = categories[category]
-        # print(categories[category])
         percents.append(round(categories[category] / total,2))
-    print(base_dist)
-    print("BASE: ", percents)
     plot_base(categories)
 
     infos = find_relationships(comments_and_ratings, base_dist)

@@ -32,29 +32,16 @@ class PdfExtractor:
                 
         
     def extract_text_to_file(self):
-        questions = [
-            "How has remote instruction affected your experience in this class?",
-            "%What is working, what is not working, in this class?"
-        ]
-
         for page in self.extract_text_by_page():
             no_comment = page[8:]
             with open("output/complete_survey.txt", "a") as survey:
                 survey.write(no_comment + "\n")
 
 
-            # if re.search(questions[1], no_comment):
-            #     print("yes")
-
-           
-            # self.write_question_file("output/complete_survey.txt")
-
-
     def write_individual_question_files(self):   # try using [file].seek(n) to get rid of initial junk
 
         with open("output/complete_survey.txt", 'r') as survey:
             whole = survey.read()
-            # print(whole)
             first_question, second_question = whole.split("%What is working, what is not working, in this class?")
 
             with open("output/What_is_working.txt", "w") as working:

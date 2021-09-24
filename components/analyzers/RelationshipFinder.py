@@ -19,23 +19,17 @@ class RelationshipFinder:
             for comment in self.comments_and_ratings[rating]:
                 if re.search(regex, comment[1], re.IGNORECASE):
                     count[comment[0]] += 1
-                    # print(comment)
 
         total = sum([num for num in count.values()])
         percents = []
         for category in count:
             percents.append(round(count[category] / total,2))
         
-        # print("count in get_base_info: ", count)
         self.significance_test(count)
-        print(f"{regex}: {percents}")
         return percents
 
 
     def significance_test(self, count_obj):
-
-        print("count_obj: ", count_obj)
-        print("base dist: ", self.base_dist)
 
         base_dist = []
         comparison = []
@@ -80,25 +74,3 @@ class RelationshipFinder:
         # statxs, pvals = ttest_rel(list(self.base_dist.values()), list(count_obj.values()))
         # print("ttest rel p: ", pvals)
         # print()
-
-
-        ## convert to relative number (based on the subsample)
-        # base = [409, 305, 1331]
-        # samp = [1,1,7]
-        # samp = [2,3,14]
-        # samp = [42,19,156]
-        # samp = [4,3,14]
-        # samp = [79, 55,227]
-        # samp = [89, 53,222 ]
-        # samp = [5,3,24]
-        # percents = [0.2, 0.15, 0.65]
-
-        # total = sum(samp)
-
-        # new_base = []
-        # for i in range(len(samp)):
-        # new_base.append(percents[i] * total)
-
-        # print(new_base)
-        # chisq, p = chisquare(new_base, samp)
-        # print(chisq, p)

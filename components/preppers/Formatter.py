@@ -28,7 +28,6 @@ class Formatter:
                     p = re.compile(pattern)
                     iterator = p.finditer(line)
                     prev = 0
-                    builder = ''
                     for match in iterator:
                         i = match.span()[1]
                         comments.append(line[prev:i - 1])

@@ -63,22 +63,6 @@ class SentimentAnalyzer:
             if pol not in individual_scores: individual_scores[pol] = 1
             else: individual_scores[pol] += 1
 
-
-            ## supplemental model for neutrals
-            # rebuilt_comment = []
-            # for token in self.tokenizer.tokenize(s.lower()):
-            #     clean_token = self.stemmer.stem(token)
-            #     rebuilt_comment.append(clean_token)
-            
-            # joined = " ".join(rebuilt_comment)
-            # t_features = {word: (word in self.tokenizer.tokenize(joined) ) for word in self.cleaned_tokens }
-            # if self.supplemental_model.classify(t_features) == "neutral":
-            #     print(self.supplemental_model.classify(t_features), " : ", joined)
-            #     print(pol, " : ", s)
-
-
-
-
             total += pol
             num += 1
 

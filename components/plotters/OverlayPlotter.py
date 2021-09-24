@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-
 class OverlayPlotter:
     def __init__(self, base, other, topic):
         self.base = base
@@ -36,5 +35,4 @@ class OverlayPlotter:
                 ["Positive", "Neutral", "Negative"] )
 
         plt.legend()
-
         plt.show()
